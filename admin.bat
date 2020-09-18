@@ -1,0 +1,1 @@
+@powershell -Command "Start-Process %1 -Verb RunAs"
