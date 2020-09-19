@@ -76,6 +76,6 @@ goto :eof
 :usage
 echo Usage :
 echo c_restart [/p] application
-echo %TAB%   /p%TAB%prompts before restarting
+echo 	   /p	prompts before restarting
 echo;
 pause
