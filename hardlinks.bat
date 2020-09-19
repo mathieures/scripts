@@ -6,3 +6,7 @@ goto :eof
 
 :usage
 @echo Creates hardlinks for every file in the first_arg directory into the second_arg directory
+@echo Usage:
+@echo 	hardlinks source_dir target_dir
+echo;
+pause

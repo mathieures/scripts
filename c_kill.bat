@@ -29,6 +29,6 @@ goto :eof
 
 :usage
 echo Usage:
-echo %TAB%c_kill application1 [application2] [...]
+echo 	c_kill application1 [application2] [...]
 echo;
 pause
