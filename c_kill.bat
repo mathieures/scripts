@@ -28,7 +28,11 @@ timeout 3 > NUL
 goto :eof
 
 :usage
-echo Usage:
-echo 	c_kill application1 [application2] [...]
+echo This script provides an easier way to kill processes than the taskkill command.
+echo It uses the FIND command to search the processes, so the full names are not required.
+echo  Usage:
+echo  c_kill [/f] proc_1 [proc_2] [...]
+echo 		  /f		force kill the processes
+echo 		  proc_n	name of the process to kill
 echo;
 pause

@@ -40,7 +40,7 @@ FOR /F "delims=, tokens=2,3" %%A IN (
 	rem add the pid on index i
 
 	rem Expands %%A into a drive, path, file and file extension
-	if "!i!"=="1" set execPath=%%~dpnxA
+	if "!i!"=="1" set execPath=%%~fA
 )
 
 if "%doprompt%"=="yes" goto :prompt
@@ -63,7 +63,7 @@ goto :end
 set /a i-=1
 for /L %%j in (0,1,!i!) do taskkill /f /pid !liste[%%j]!
 
-START "%execPath%" "%execPath%"
+START /D "%execPath%"
 goto :end
 
 
@@ -74,8 +74,9 @@ goto :eof
 
 
 :usage
-echo Usage :
-echo c_restart [/p] application
-echo 	   /p	prompts before restarting
+echo This scripts provides an command-line way to restart certain processes, though very far from perfect.
+echo  Usage :
+echo  c_restart [/p] process
+echo			 /p 	prompts before restarting
 echo;
 pause
