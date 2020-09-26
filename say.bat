@@ -17,26 +17,26 @@ set "tempFile=%lockFile%.temp"
 9>&2 2>nul (2>&9 8>"%lockFile%" call :start %*) || goto :getTemp
 
 rem Cleanup
-2>nul del "%lockFile%" "%tempFile%"
+2>nul del "%lockFile%" "%tempFile%.ps1"
 exit /b
 
 :start
-echo Add-Type -AssemblyName System.speech							>> %tempFile%
-echo $say = New-Object System.Speech.Synthesis.SpeechSynthesizer	>> %tempFile%
+>> %tempFile% echo Add-Type -AssemblyName System.speech
+>> %tempFile% echo $say = New-Object System.Speech.Synthesis.SpeechSynthesizer
 
-echo function Start-PSSpeech {										>> %tempFile%
-echo 	param ($text)													>> %tempFile%
-echo     $say.Speak($text) 												>> %tempFile%
-echo }																>> %tempFile%
+>> %tempFile% echo function Start-PSSpeech {
+>> %tempFile% echo 	param ($text)
+>> %tempFile% echo     $say.Speak($text)
+>> %tempFile% echo }
 
-echo if ($args[0] -eq $null){										>> %tempFile%
-echo     $words = Read-Host -Prompt 'Words to say'						>> %tempFile%
+>> %tempFile% echo if ($args[0] -eq $null){
+>> %tempFile% echo     $words = Read-Host -Prompt 'Words to say'
 
-echo     While($words -ne ""){ 											>> %tempFile%
-echo 	    Start-PSSpeech($words) 											>> %tempFile%
-echo 	    $words = Read-Host -Prompt 'Words to say'}  					>> %tempFile%
-echo 	} 																>> %tempFile%
-echo else { Start-PSSpeech($args) }									>> %tempFile%
+>> %tempFile% echo     While($words -ne ""){
+>> %tempFile% echo 	    Start-PSSpeech($words)
+>> %tempFile% echo 	    $words = Read-Host -Prompt 'Words to say'}
+>> %tempFile% echo 	}
+>> %tempFile% echo else { Start-PSSpeech($args) }
 
 
 set "name=%tempFile:\= %"
