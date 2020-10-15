@@ -23,18 +23,17 @@ exit /b
 :start
 >> %tempFile% echo Add-Type -AssemblyName System.speech
 >> %tempFile% echo $say = New-Object System.Speech.Synthesis.SpeechSynthesizer
-
 >> %tempFile% echo function Start-PSSpeech {
 >> %tempFile% echo 	param ($text)
->> %tempFile% echo     $say.Speak($text)
+>> %tempFile% echo 	$say.Speak($text)
 >> %tempFile% echo }
 
 >> %tempFile% echo if ($args[0] -eq $null){
->> %tempFile% echo     $words = Read-Host -Prompt 'Words to say'
+>> %tempFile% echo 	$words = Read-Host -Prompt 'Words to say'
 
->> %tempFile% echo     While($words -ne ""){
->> %tempFile% echo 	    Start-PSSpeech($words)
->> %tempFile% echo 	    $words = Read-Host -Prompt 'Words to say'}
+>> %tempFile% echo 	While($words -ne ""){
+>> %tempFile% echo 		Start-PSSpeech($words)
+>> %tempFile% echo 		$words = Read-Host -Prompt 'Words to say'}
 >> %tempFile% echo 	}
 >> %tempFile% echo else { Start-PSSpeech($args) }
 
