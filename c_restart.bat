@@ -74,9 +74,9 @@ goto :eof
 
 
 :usage
-echo This scripts provides an command-line way to restart certain processes, though very far from perfect.
+echo This script provides an command-line way to restart certain processes, though very far from perfect.
 echo  Usage :
-echo  c_restart [/p] process
-echo			 /p 	prompts before restarting
+echo  %~nx0	[/p] process
+echo 		 /p 	prompts before restarting
 echo;
 pause
