@@ -23,6 +23,7 @@ exit /b
 :start
 >> %tempFile% echo Add-Type -AssemblyName System.speech
 >> %tempFile% echo $say = New-Object System.Speech.Synthesis.SpeechSynthesizer
+
 >> %tempFile% echo function Start-PSSpeech {
 >> %tempFile% echo 	param ($text)
 >> %tempFile% echo 	$say.Speak($text)

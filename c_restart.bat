@@ -62,8 +62,7 @@ goto :end
 :restart
 set /a i-=1
 for /L %%j in (0,1,!i!) do taskkill /f /pid !liste[%%j]!
-
-START /D "%execPath%"
+start /b %execPath% 2> NUL
 goto :end
 
 
@@ -74,7 +73,7 @@ goto :eof
 
 
 :usage
-echo This script provides an command-line way to restart certain processes, though very far from perfect.
+echo This script provides an way to restart certain processes from command line.
 echo  Usage :
 echo  %~nx0	[/p] process
 echo 		 /p 	prompts before restarting
