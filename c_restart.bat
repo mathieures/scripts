@@ -43,12 +43,13 @@ FOR /F "delims=, tokens=2,3" %%A IN (
 	if "!i!"=="1" set execPath=%%~fA
 )
 
+if "!i!"=="0" echo No process running have this name & goto :end
+
 if "%doprompt%"=="yes" goto :prompt
 goto :restart
 
 
 :prompt
-if "!i!"=="0" echo No process running have this name & goto :end
 echo;
 echo Number of process(es): !i!
 
@@ -61,8 +62,10 @@ goto :end
 
 :restart
 set /a i-=1
+rem From 0 to i, by steps of 1
 for /L %%j in (0,1,!i!) do taskkill /f /pid !liste[%%j]!
-start /b %execPath% 2> NUL
+start /b "" "%execPath%" > NUL
+rem Starts the program in a new cmd but without window
 goto :end
 
 
