@@ -16,4 +16,4 @@ function Start-Timer {
     }
 }
 
-# Start-Timer -Seconds 15 -Activity "A 15s timer" -ShowProgressBar
+# Start-Timer -Seconds 15 -Activity "A 15s timer" -ShowProgressBar # Example of it working
