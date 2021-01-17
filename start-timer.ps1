@@ -5,8 +5,8 @@ function Start-Timer {
             [Alias("S","Sec")]
             [int]$Seconds = 5,
         [string]$Activity = "Timer",
-        [string]$Status = "Waiting...",
-        [Alias("S")]
+        [string]$Status = "Attente...",
+        [Alias("Show","Visual","V")]
             [switch]$ShowProgressBar,
         [Alias("C")]
             [switch]$Cancellable
