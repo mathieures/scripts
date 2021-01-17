@@ -5,7 +5,7 @@ function Start-Timer {
             [Alias("S","Sec")]
             [int]$Seconds = 5,
         [string]$Activity = "Timer",
-        [string]$Status = "Attente...",
+        [string]$Status = "Waiting...",
         [Alias("Show","Visual","V")]
             [switch]$ShowProgressBar,
         [Alias("C")]
@@ -14,7 +14,7 @@ function Start-Timer {
     
     # Job handling the progressbar
     $TimerJob = Start-Job -Name "TimerJob" {
-        param([int]$Seconds = 5, [string]$Activity = "Timer", [string]$Status = "Waiting...", $ShowProgressBar)
+        param([int]$Seconds = 5, [string]$Activity, [string]$Status, $ShowProgressBar)
         # We cannot use a switch here: they are not supported by jobs
         
         $i = $Seconds
