@@ -10,7 +10,7 @@ if ERRORLEVEL 1 goto :normalkill
 goto :forcekill
 
 :forcekill
-rem we remove the '/f', wherever it is
+rem We remove the '/f', wherever it is
 set args=%*
 set newargs=%args:/f=%
 set newargs=%args:/F=%
