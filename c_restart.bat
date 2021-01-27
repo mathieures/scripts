@@ -78,7 +78,7 @@ goto :eof
 :usage
 echo This script provides an easy way to restart certain processes from the command line.
 echo  Usage :
-echo  %~nx0	[/p] process
+echo  %~nx0	[/p] ^<process^>
 echo 		 /p 	prompts before restarting
 echo;
 pause
