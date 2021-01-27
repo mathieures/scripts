@@ -37,9 +37,9 @@ FOR /F "delims=, tokens=2,3" %%A IN (
 
 	set /A liste[!i!]=%%B
 	set /A i+=1
-	rem add the pid on index i
+	rem Add the pid on index i
 
-	rem Expands %%A into a drive, path, file and file extension
+	rem Expand %%A into a drive, path, file and file extension
 	if "!i!"=="1" set execPath=%%~fA
 )
 
@@ -62,10 +62,10 @@ goto :end
 
 :restart
 set /a i-=1
-rem From 0 to i, by steps of 1
 for /L %%j in (0,1,!i!) do taskkill /f /pid !liste[%%j]!
+rem From 0 to i, by steps of 1
+rem Start the program in a new cmd but without window
 start /b "" "%execPath%" > NUL
-rem Starts the program in a new cmd but without window
 goto :end
 
 
@@ -76,7 +76,7 @@ goto :eof
 
 
 :usage
-echo This script provides an way to restart certain processes from command line.
+echo This script provides an easy way to restart certain processes from the command line.
 echo  Usage :
 echo  %~nx0	[/p] process
 echo 		 /p 	prompts before restarting
