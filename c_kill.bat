@@ -33,6 +33,6 @@ echo It uses the FIND command to search the processes, so the full names are not
 echo  Usage:
 echo  %~nx0 [/f] ^<proc_1^> [proc_2] [...]
 echo 		  /f		force kill the processes
-echo 		  proc_n	name of the process to kill
+echo 		  proc_i	name of the process to kill
 echo;
 pause
