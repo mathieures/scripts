@@ -10,7 +10,7 @@ if ERRORLEVEL 1 goto :normalkill
 goto :forcekill
 
 :forcekill
-::we remove the '/f', wherever it is
+rem we remove the '/f', wherever it is
 set args=%*
 set newargs=%args:/f=%
 set newargs=%args:/F=%
@@ -31,7 +31,7 @@ goto :eof
 echo This script provides an easier way to kill processes than the taskkill command.
 echo It uses the FIND command to search the processes, so the full names are not required.
 echo  Usage:
-echo  %~nx0 [/f] proc_1 [proc_2] [...]
+echo  %~nx0 [/f] ^<proc_1^> [proc_2] [...]
 echo 		  /f		force kill the processes
 echo 		  proc_n	name of the process to kill
 echo;
