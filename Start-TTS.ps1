@@ -4,8 +4,8 @@ function Start-TTS {
             [string[]]$Text,
         [ValidateRange(0,2)]
             [int]$Voice = 0,
-        [Alias('Alt','EN','US','Anglais')]
-            [switch]$AlternativeVoice,
+        [Alias('Alt','EN','US')]
+            [switch]$AlternativeVoice, # overrides the $Voice parameter
         [Alias('Speed')]
             [int]$Rate = 0
     )
