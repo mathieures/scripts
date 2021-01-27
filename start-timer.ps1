@@ -1,21 +1,21 @@
-# A timer (of 5s by default) cancellable by pressing any key
 function Start-Timer {
     param(
-        [Parameter(Mandatory)]
-            [Alias("S","Sec")]
+        [Parameter(Mandatory,ValueFromPipeline)]
+        [Alias('S','Sec','Time')]
             [int]$Seconds = 5,
-        [string]$Activity = "Timer",
-        [string]$Status = "Waiting...",
-        [Alias("Show","Visual","V")]
+            [string]$Activity = 'Timer',
+            [string]$Status = 'Attente...',
+        [Alias('Show','Visual','V')]
             [switch]$ShowProgressBar,
-        [Alias("C")]
-            [switch]$Cancellable
+        [Alias('N')]
+            [switch]$NotCancellable, # the timer is cancellable by pressing any key, by default
+            [switch]$NoBeep # no beep when finished
     )
-    
-    # Job handling the progressbar
-    $TimerJob = Start-Job -Name "TimerJob" {
-        param([int]$Seconds = 5, [string]$Activity, [string]$Status, $ShowProgressBar)
-        # We cannot use a switch here: they are not supported by jobs
+
+    # Job qui s'occupe de la progressbar
+    $TimerJob = Start-Job -Name 'TimerJob' {
+        param([int]$Seconds, [string]$Activity, [string]$Status, $ShowProgressBar)
+        # obligé de ne pas utiliser un switch ici, car les Jobs ne les supportent pas
         
         $i = $Seconds
         while($i -ne 0)
@@ -31,39 +31,41 @@ function Start-Timer {
         }
     } -ArgumentList $Seconds, $Activity, $Status, $ShowProgressBar
 
-    if($Cancellable)
+    if(!($NotCancellable))
     {
-        Write-Host "Press any key to cancel."
-        # Removes the 'Enter' key press starting the script (known issue of Powershell)
+        Write-Host 'Appuyer sur une touche pour annuler'
+        # Enlève l'appui sur Entrée du lancer du script
         Start-Sleep -milliseconds 110
         $Host.UI.RawUI.FlushInputBuffer()
     }
 
-    while($TimerJob.State -eq "Running")
+    while($TimerJob.State -eq 'Running')
     {
-        # Updating the progressbar
+        # on met à jour la progressbar
         Receive-Job $TimerJob
-        if($Cancellable)
+        
+        if(!($NotCancellable))
         {
-            # Waiting for input for 100ms (= refreshing the progressbar every 100ms), checking every 10ms for input
+            # on attend un input pendant 100ms (= on refresh la progressbar toutes les 100ms), on teste toutes les 10ms pour un input
             $MillisecondsRemaining = 100
-            while((-not ($key = $Host.UI.RawUI.KeyAvailable)) -and ($MillisecondsRemaining -ne 0))
+            while( !($key = [Console]::KeyAvailable) -and ($MillisecondsRemaining -gt 0) )
             {
                 Start-Sleep -Milliseconds 10
                 $MillisecondsRemaining-=10
             }
             if($key)
             {
-                $Host.UI.RawUI.FlushInputBuffer() # Removing the pressed key from the console, whatever it is
-                Write-Host "Ok, cancelling." -ForegroundColor Yellow
+                $Host.UI.RawUI.FlushInputBuffer() # on enlève l'appui sur la touche, quelle qu'elle soit
+                $PSCmdlet.WriteError(
+                    (New-Object System.Management.Automation.ErrorRecord 'Ok, annulation.',
+                        $null, 'NotSpecified', $null))
                 Stop-Job $TimerJob
                 Remove-Job $TimerJob
-                return 1 # Cancelled
+                return 1 # Annulé
             }
         }
     }
     Remove-Job $TimerJob
-    return 0 # Completed
+    if(!$NoBeep) { [Media.Systemsounds]::Beep.play() }
+    return 0 # Complété
 }
-
-# Start-Timer -Seconds 15 -Activity "A 15s timer" -ShowProgressBar -C # Example of it working
