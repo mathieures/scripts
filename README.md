@@ -1,1 +1,1 @@
-These are scripts I wrote that I find useful (or maybe I was just bored)
+Scripts I made and find useful or fun to use.
