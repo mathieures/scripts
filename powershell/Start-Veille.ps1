@@ -1,4 +1,5 @@
 function Start-Veille {
+    # Put the computer in sleep mode after a certain number of seconds
     param(
         [Alias('T')]
             [int]$Seconds = 5
