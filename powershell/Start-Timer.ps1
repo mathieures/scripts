@@ -1,21 +1,22 @@
 function Start-Timer {
+    # A timer (5s by default) cancellable by pressing any key. A sound is played at the end.
     param(
         [Parameter(Mandatory,ValueFromPipeline)]
         [Alias('S','Sec','Time')]
             [int]$Seconds = 5,
-            [string]$Activity = 'Timer',
-            [string]$Status = 'Attente...',
-        [Alias('Show','Visual','V')]
-            [switch]$ShowProgressBar,
+            [string]$Activity = 'Timer', # The title of the timer (doesn't change the behaviour)
+            [string]$Status = 'Waiting...', # The sub-title of the timer (doesn't change the behaviour)
+        [Alias('Show','Visual','V','ProgressBar','Progress','Bar')]
+            [switch]$ShowProgressBar, # Shows a progress bar at the top of the console
         [Alias('N')]
-            [switch]$NotCancellable, # the timer is cancellable by pressing any key, by default
-            [switch]$NoBeep # no beep when finished
+            [switch]$NotCancellable, # The timer is cancellable by pressing any key, by default
+            [switch]$NoBeep # No sound played when finished
     )
 
-    # Job handling the progressbar
+    # Job handling the timer (and progressbar if specified)
     $TimerJob = Start-Job -Name 'TimerJob' {
         param([int]$Seconds, [string]$Activity, [string]$Status, $ShowProgressBar)
-        # switches are not supported by Jobs
+        # Note: switches are not supported by Jobs
         
         $i = $Seconds
         while($i -ne 0)
@@ -41,13 +42,14 @@ function Start-Timer {
 
     while($TimerJob.State -eq 'Running')
     {
-        # update the progressbar
+        # Update the written timer (and progressbar if specified)
         Receive-Job $TimerJob
         
+        # If cancellable, wait for input for 100ms (= refresh the time+progressbar every 100ms)
         if(!($NotCancellable))
         {
-            # wait for input for 100ms (= refresh the progressbar every 100ms), checking every 10ms for input
             $MillisecondsRemaining = 100
+            # Check every 10ms for input
             while( !($key = [Console]::KeyAvailable) -and ($MillisecondsRemaining -gt 0) )
             {
                 Start-Sleep -Milliseconds 10
@@ -55,7 +57,7 @@ function Start-Timer {
             }
             if($key)
             {
-                $Host.UI.RawUI.FlushInputBuffer() # on enlève l'appui sur la touche, quelle qu'elle soit
+                $Host.UI.RawUI.FlushInputBuffer() # On enlève l'appui sur la touche, quelle qu'elle soit
                 $PSCmdlet.WriteError(
                     (New-Object System.Management.Automation.ErrorRecord 'Ok, annulation.',
                         $null, 'NotSpecified', $null))
@@ -65,7 +67,7 @@ function Start-Timer {
             }
         }
     }
-    Remove-Job $TimerJob
+    Remove-Job $TimerJob # Just remove the job as it is already stopped
     if(!$NoBeep) { [Media.Systemsounds]::Beep.play() }
     return 0 # Completed
 }
