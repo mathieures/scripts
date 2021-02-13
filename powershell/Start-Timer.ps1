@@ -12,10 +12,10 @@ function Start-Timer {
             [switch]$NoBeep # no beep when finished
     )
 
-    # Job qui s'occupe de la progressbar
+    # Job handling the progressbar
     $TimerJob = Start-Job -Name 'TimerJob' {
         param([int]$Seconds, [string]$Activity, [string]$Status, $ShowProgressBar)
-        # obligé de ne pas utiliser un switch ici, car les Jobs ne les supportent pas
+        # switches are not supported by Jobs
         
         $i = $Seconds
         while($i -ne 0)
@@ -33,20 +33,20 @@ function Start-Timer {
 
     if(!($NotCancellable))
     {
-        Write-Host 'Appuyer sur une touche pour annuler'
-        # Enlève l'appui sur Entrée du lancer du script
+        Write-Host 'Press any key to cancel'
+        # Removes the 'Enter' keypress from entering the script
         Start-Sleep -milliseconds 110
         $Host.UI.RawUI.FlushInputBuffer()
     }
 
     while($TimerJob.State -eq 'Running')
     {
-        # on met à jour la progressbar
+        # update the progressbar
         Receive-Job $TimerJob
         
         if(!($NotCancellable))
         {
-            # on attend un input pendant 100ms (= on refresh la progressbar toutes les 100ms), on teste toutes les 10ms pour un input
+            # wait for input for 100ms (= refresh the progressbar every 100ms), checking every 10ms for input
             $MillisecondsRemaining = 100
             while( !($key = [Console]::KeyAvailable) -and ($MillisecondsRemaining -gt 0) )
             {
@@ -61,11 +61,11 @@ function Start-Timer {
                         $null, 'NotSpecified', $null))
                 Stop-Job $TimerJob
                 Remove-Job $TimerJob
-                return 1 # Annulé
+                return 1 # Cancelled
             }
         }
     }
     Remove-Job $TimerJob
     if(!$NoBeep) { [Media.Systemsounds]::Beep.play() }
-    return 0 # Complété
+    return 0 # Completed
 }
