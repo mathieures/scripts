@@ -48,7 +48,7 @@ function ConvertTo-Corrupted {
             $TargetDir = ($parentDir + '\' + $TargetDir)
         }
 
-        # Si le dossier n'existe pas, on le crée.
+        # If the directory does not exist, create it
         if(!(Test-Path $TargetDir -PathType Container)) {
             $null = (New-Item -Path $TargetDir -ItemType Directory)
             Write-Verbose "Created directory '$TargetDir'"
