@@ -1,7 +1,6 @@
 @echo off
-setlocal
 
-if "%*"=="" (
+if "%~1"=="" (
     echo Usage: delete_hardlinks.bat [file_1] [file_2] [...]
     echo    OR: Drag files onto the .bat script in the explorer
     exit /b
