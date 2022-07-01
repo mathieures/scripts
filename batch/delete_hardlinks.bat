@@ -3,12 +3,12 @@
 if "%~1"=="" (
     echo Usage: delete_hardlinks.bat [file_1] [file_2] [...]
     echo    OR: Drag files onto the .bat script in the explorer
-    exit /b
+    goto end
 )
 
 rem For each file in the arguments
 for %%f in (%*) do (
-    echo Fichier : %%f
+    echo File: %%f
     rem Loop through its hardlinks
     for /f "usebackq tokens=*" %%h in (`fsutil hardlink list %%f`) DO (
         echo;  Hardlink : %%h
@@ -17,7 +17,7 @@ for %%f in (%*) do (
 
 echo;
 rem Note: there is a space at the end of the next line
-set /p answer=Delete all these files? ([y]es) 
+set /p answer=Delete all these files? (y/yes/anything else for no) 
 
 rem Logical OR
 if "%answer%" == "y" goto delete
