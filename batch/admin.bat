@@ -1,9 +1,9 @@
 @echo off
 
-if "%*"=="" goto :usage
+if "%1"=="" goto :usage
 rem if there is no argument, show usage and end
 
-powershell -Command "Start-Process %* -Verb RunAs"
+powershell -NoProfile -Command "Start-Process %* -Verb RunAs"
 goto end
 
 
@@ -11,6 +11,7 @@ goto end
 echo This script starts the given process with administrator privileges.
 echo  Usage:
 echo  %~nx0 ^<process^>
+goto end
 
 :end
 echo;
