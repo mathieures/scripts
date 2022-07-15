@@ -2,7 +2,7 @@
 
 SetLocal EnableDelayedExpansion EnableExtensions
 
-if "%*"=="" goto :usage
+if "%~1"=="" goto :usage
 rem if there is no argument, show usage and end
 
 echo %* | FIND /i "/f" > NUL

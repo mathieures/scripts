@@ -6,9 +6,9 @@ set packages_file=%LOCALAPPDATA%\auto_winget_upgrade_packages.txt
 rem Create empy file if it doesn't exist
 if not exist %packages_file% ( fsutil file createnew %packages_file% 0 )
 
-if "%1"=="add" goto adding_loop
-if "%1"=="list" goto list_packages
-if "%1"=="edit" goto edit_file
+if "%~1"=="add" goto adding_loop
+if "%~1"=="list" goto list_packages
+if "%~1"=="edit" goto edit_file
 
 rem No argument
 :upgrading
@@ -33,7 +33,7 @@ goto end
 :adding_loop
 shift
 rem Break condition
-if "%1"=="" (
+if "%~1"=="" (
 	goto adding_loop_end
 ) else (
 	echo Adding %1
