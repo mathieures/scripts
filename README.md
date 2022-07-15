@@ -8,7 +8,8 @@ admin.bat				| Starts the given process with administrator privileges
 c_kill.bat				| Provides an easier way to kill processes than the taskkill command
 c_restart.bat			| Provides an easy way to restart certain processes from the command line
 gbash.bat				| Starts Git Bash if it is installed in the default location
-ipython.bat				| Starts IPython without having to specify `python -m`
+ipython.bat				| Starts IPython without having to specify `python -m IPython`
+auto_winget_upgrade.bat	| Upgrade automatically packages from a list with `winget`
 
 ## PowerShell
 
