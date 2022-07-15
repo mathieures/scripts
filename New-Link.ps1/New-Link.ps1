@@ -1,5 +1,6 @@
 function New-Link {
     # Create a link (symbolic by default) the easy way
+    # Note: the Name and Target positional parameters are in reverse order compared to mklink.exe
     param(
         [ValidateSet('SymbolicLink','HardLink')]
             $Type = 'SymbolicLink',
