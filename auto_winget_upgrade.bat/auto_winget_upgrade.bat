@@ -3,7 +3,7 @@
 title Auto Winget Upgrade
 
 set packages_file=%LOCALAPPDATA%\auto_winget_upgrade_packages.txt
-rem Create empy file if it doesn't exist
+rem Create empty file if it doesn't exist
 if not exist %packages_file% ( fsutil file createnew %packages_file% 0 )
 
 if "%~1"=="add" goto adding_loop
