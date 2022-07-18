@@ -1,0 +1,3 @@
+JanDeDobbeleer.OhMyPosh
+Microsoft.DotNet.DesktopRuntime.6
+Oracle.JavaRuntimeEnvironment
