@@ -12,14 +12,14 @@ if not exist %packages_file% (
 	goto end
 )
 
-if "%~1"=="add" goto adding_loop
-if "%~1"=="list" goto list_packages
-if "%~1"=="edit" goto edit_file
-if "%~1"=="help" goto show_help
-if "%~1"=="?" goto show_help
+if [%~1] == [add] goto adding_loop
+if [%~1] == [list] goto list_command
+if [%~1] == [edit] goto edit_command
+if [%~1] == [help] goto help_command
+if [%~1] == [?] goto help_command
 
 rem No argument
-:upgrading
+:upgrade
 echo Updating sources...
 rem List upgradable packages in a file
 set temp_file=%tmp%\winget_upgradable_packages.txt
@@ -38,10 +38,12 @@ for /f %%A in (%packages_file%) do (
 )
 goto end
 
+
+:add_command
 :adding_loop
 shift
 rem Break condition
-if "%~1"=="" (
+if [%~1] == [] (
 	goto adding_loop_end
 ) else (
 	echo Adding %1
@@ -52,7 +54,7 @@ if "%~1"=="" (
 goto end
 
 
-:list_packages
+:list_command
 rem List packages in the file
 for /f %%A in (%packages_file%) do (
 	echo %%A
@@ -60,21 +62,20 @@ for /f %%A in (%packages_file%) do (
 goto end
 
 
-:edit_file
+:edit_command
 rem Open the file for edit
 notepad %packages_file%
 goto end
 
 
-:show_help
-echo Automatically upgrade packages from a list of packages ID's with winget
-echo  Usage:
-echo   - %~nx0 add ^<package1^> [package2] [...]
-echo     -^> To add packages to the list
-echo   - %~nx0 list
-echo     -^> To list the packages in the packages list:
-echo   - %~nx0 edit
-echo     -^> To open the packages list in notepad:
+:help_command
+echo %~nx0:
+echo     Automatically upgrade packages from a list of packages ID's with winget
+echo;
+echo     Commands:
+echo       add package [package ...]    Add given packages to the list
+echo       list                         List the packages in the packages list
+echo       edit                         Open the packages list in notepad.exe
 echo;
 pause
 goto end
@@ -82,4 +83,3 @@ goto end
 
 :end
 rem pause
-exit /b
