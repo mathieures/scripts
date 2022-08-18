@@ -11,3 +11,4 @@ auto_winget_upgrade.bat	| Upgrade packages automatically with `winget` based on 
 New-Link.ps1			| Create a link (symbolic by default) the easy way
 Set-SplitLocation.ps1	| Change the directory to the one of the file
 Start-Timer.ps1			| A timer (5s by default) cancellable by pressing any key. A sound is played at the end.
+dospath2unix.sh			| Convert a Windows path to a WSL path

@@ -1,0 +1,1 @@
+echo "$*" | sed 's;\\;/;g' | sed -r 's;([A-Z]):;/mnt/\l\1;'
