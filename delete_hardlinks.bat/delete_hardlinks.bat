@@ -6,25 +6,8 @@ if [%~1] == [] (
     goto end
 )
 
-rem Initialization
-set args=%*
-
-rem If /d is found at the beginning with a space after,
-rem at the end with a space before, or in the middle
-rem with spaces before and after: clean args, list and delete
-echo %args%|findstr /i /B "\/d " > NUL && set args=%args:~3% && goto :list_and_delete
-echo %args%|findstr /i /E " \/d" > NUL && set args=%args:~0,-3% && goto :list_and_delete
-echo %args%|findstr /i /C:" \/d " > NUL && set args=%args: /d = % && goto :list_and_delete
-rem Note: the last option removes every occurrence of ' /d ', but it shouldn't be a big problem
-
-rem Else, list and end
-call :list
-goto :end
-
-
-:list
 rem For each file in the arguments
-for %%f in (%args%) do (
+for %%f in (%*) do (
     if exist %%f (
         echo File: %%f
         rem Loop through its hardlinks
@@ -35,13 +18,6 @@ for %%f in (%args%) do (
         echo File '%%f' not found.
     )
 )
-exit /b
-
-
-:list_and_delete
-rem Clean the arguments
-
-call :list
 
 echo;
 rem Note: there is a space at the end of the next line
@@ -53,9 +29,8 @@ if [%answer%] == [yes] goto :delete
 
 goto :cancel
 
-:delete
 rem For each file in the arguments
-for %%f in (%args%) do (
+for %%f in (%*) do (
     rem Loop through its hardlinks
     for /f "usebackq tokens=*" %%h in (`fsutil hardlink list %%f`) DO (
         echo Deleting: %%~dh%%h
