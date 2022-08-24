@@ -11,8 +11,8 @@ goto end
 echo This script starts the given process with administrator privileges.
 echo  Usage:
 echo  %~nx0 ^<process^>
+pause
 goto end
 
 :end
 echo;
-pause
