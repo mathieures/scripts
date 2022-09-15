@@ -82,4 +82,3 @@ goto end
 
 
 :end
-rem pause
