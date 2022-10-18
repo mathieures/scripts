@@ -1,3 +1,4 @@
+7zip.7zip
 JanDeDobbeleer.OhMyPosh
 Microsoft.DotNet.DesktopRuntime.6
-Oracle.JavaRuntimeEnvironment
+Python.Python.3.10
