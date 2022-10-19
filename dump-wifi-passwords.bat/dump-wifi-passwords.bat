@@ -9,13 +9,10 @@ setlocal enabledelayedexpansion
 rem Accents are not redirected correctly without this command
 chcp 65001 >NUL
 
-set networks_list=%tmp%\networks.txt
-set current_wifi_info_file=%networks_list%.tmp
 
-netsh wlan show profiles > %networks_list%
-
-rem For each line with a network name
-for /F "tokens=*" %%r in ('type %networks_list% ^| findstr /R ":.."') do (
+rem Get basic info for all networks
+rem For each line of the output containing a network name
+for /F "tokens=*" %%r in ('netsh wlan show profiles ^| findstr /R ":.."') do (
 	set "name="
 	rem Save the right side of the colon in the 'name' variable
 	for /F "tokens=2 delims=:" %%a in ('echo %%r') do (
@@ -30,41 +27,38 @@ for /F "tokens=*" %%r in ('type %networks_list% ^| findstr /R ":.."') do (
 	rem The 20th line of this command is the password:
 	rem for /F "delims=: tokens=2" %a in ('export-wifi.bat') do (echo%a)
 
-	rem Split lines with a colon and put the output to the file (ideally we wouldn't need one)
-	(
-		for /F "delims=: tokens=2" %%c in (
-			'netsh wlan show profiles name^="!name!" key^=clear'
-		) do (
-			echo%%c
-		)
-	) > %current_wifi_info_file%
-
-	rem Display the name and password of the network in the file
-	call :get_pass_of_current_wifi
+	call :get_pass_of_network !name!
 )
-goto cleanup
+goto end
 
 
-rem Subroutine: display the name and password of the network in %current_wifi_info_file%
-:get_pass_of_current_wifi
-for /F "usebackq tokens=* skip=19" %%a in ("%current_wifi_info_file%") do (
-	echo !name!:%%a
-	rem Break (we only need one line)
-	exit /b
+rem Subroutine: display the name and password of the network with the name given in parameter
+:get_pass_of_network
+rem Split on colons and skip 32 lines (is it consistent?)
+for /F "delims=: tokens=*" %%c in (
+	'netsh wlan show profiles name^="%*" key^=clear ^| more +32'
+) do (
+	rem The password with a space is the second element
+	for /F "delims=: tokens=1,*" %%d in ('echo %%c') do (
+		set "pass=%%e"
+		rem If there is a password, 'pass' will have a space in the front
+		if not [!pass!] == [] (
+			set "pass=!pass:~1!"
+		)
+		echo !name!:!pass!
+		rem Break
+		exit /b
+	)
 )
 exit /b
 
 
 :usage
-echo This script displays all registered wifi names and passwords.
-echo Networks without a password are just shown with 'No'.
+echo This script displays all registered wifi names and passwords in the form 'network:password'.
+echo Networks without a password just do not have anything after the colon.
 echo  Usage:
 echo  %~nx0 [?^|help]
 pause
 goto end
-
-:cleanup
-del %networks_list%
-del %current_wifi_info_file%
 
 :end
