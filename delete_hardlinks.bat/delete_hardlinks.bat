@@ -24,10 +24,10 @@ rem Note: there is a space at the end of the next line
 set /p answer=Delete all these files? (y/yes/anything else for no) 
 
 rem Logical OR
-if [%answer%] == [y] goto :delete
-if [%answer%] == [yes] goto :delete
+if [%answer%] == [y] goto delete
+if [%answer%] == [yes] goto delete
 
-goto :cancel
+goto cancel
 
 rem For each file in the arguments
 for %%f in (%*) do (
@@ -37,7 +37,7 @@ for %%f in (%*) do (
         del "%%~dh%%h"
     )
 )
-goto :end
+goto end
 
 
 :cancel

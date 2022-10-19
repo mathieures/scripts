@@ -1,6 +1,6 @@
 @echo off
 
-if [%~1] == [] goto :usage
+if [%~1] == [] goto usage
 rem if there is no argument, show usage and end
 
 powershell -NoProfile -Command "Start-Process %* -Verb RunAs"
