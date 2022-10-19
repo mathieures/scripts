@@ -21,11 +21,9 @@ for /F "tokens=*" %%r in ('netsh wlan show profiles ^| findstr /R ":.."') do (
 	rem We now have the network name with a space in front of it, so we cut it
 	set name=!name:~1!
 
-	rem This command displays infos on the network with the name 'name':
+	rem This command displays infos on the network with the
+	rem name 'name', the 33rd line containing the password:
 	rem netsh wlan show profiles name="!name!" key=clear
-
-	rem The 20th line of this command is the password:
-	rem for /F "delims=: tokens=2" %a in ('export-wifi.bat') do (echo%a)
 
 	call :get_pass_of_network !name!
 )
