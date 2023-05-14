@@ -13,6 +13,8 @@ list_hardlinks.bat			| List and optionally delete hardlinks of one or multiple f
 dump-wifi-passwords.bat		| Displays all registered wifi names and passwords
 Get-MD5.ps1					| Get the MD5 hash of the given string
 Get-SHA1.ps1				| Get the SHA1 hash of the given string
+ConvertToBase64.ps1			| Convert the given string to base64
+ConvertFromBase64.ps1		| Convert the given base64 string back to normal
 New-Link.ps1				| Create a link (symbolic by default) the easy way
 Set-LocationToFilePath.ps1	| Change the directory to the one of the file
 Start-Timer.ps1				| A timer (5s by default) cancellable by pressing any key. A sound is played at the end.
