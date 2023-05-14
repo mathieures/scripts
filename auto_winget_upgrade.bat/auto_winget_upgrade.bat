@@ -8,11 +8,11 @@ if not exist %packages_file% (
 	rem Note: fsutil displays a message for file creation
 	fsutil file createnew %packages_file% 0
 	echo To add packages, use:
-	echo %~nx0 add ^<package1^> [package2] [...]
+	echo %~nx0 add ^<package_id_1^> [package_id_2 ...]
 	goto end
 )
 
-if [%~1] == [add] goto adding_loop
+if [%~1] == [add] goto add_command
 if [%~1] == [list] goto list_command
 if [%~1] == [edit] goto edit_command
 if [%~1] == [help] goto help_command
@@ -40,7 +40,13 @@ goto end
 
 
 :add_command
+rem If there is only one argument ('add')
+if [%~2] == [] (
+	echo Argument needed.
+	goto end
+)
 :adding_loop
+rem Remove the first argument each iteration
 shift
 rem Break condition
 if [%~1] == [] (
@@ -63,7 +69,7 @@ goto end
 
 
 :edit_command
-rem Open the file for edit
+rem Open the file to edit it
 notepad %packages_file%
 goto end
 
@@ -71,11 +77,13 @@ goto end
 :help_command
 echo %~nx0:
 echo     Automatically upgrade packages from a list of packages ID's with winget
+echo     Tip: put a shortcut in %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
 echo;
 echo     Commands:
-echo       add package [package ...]    Add given packages to the list
-echo       list                         List the packages in the packages list
-echo       edit                         Open the packages list in notepad.exe
+echo       add package_id [package_id ...]	Add given packages to the list
+echo       list                           	List the packages in the packages list
+echo       edit                           	Open the packages list in notepad.exe
+echo       help^|?                        	Display this help
 echo;
 pause
 goto end
