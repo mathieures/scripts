@@ -17,7 +17,7 @@ function Start-Timer {
     $TimerJob = Start-Job -Name 'TimerJob' {
         param([int]$Seconds, [string]$Activity, [string]$Status, $ShowProgressBar)
         # Note: switches are not supported by Jobs
-        
+
         $i = $Seconds
         while($i -ne 0)
         {
@@ -34,7 +34,7 @@ function Start-Timer {
 
     if(!($NotCancellable))
     {
-        Write-Host 'Press any key to cancel'
+        Write-Output 'Press any key to cancel'
         # Removes the 'Enter' keypress from entering the script
         Start-Sleep -milliseconds 110
         $Host.UI.RawUI.FlushInputBuffer()
@@ -44,7 +44,7 @@ function Start-Timer {
     {
         # Update the written timer (and progressbar if specified)
         Receive-Job $TimerJob
-        
+
         # If cancellable, wait for input for 100ms (= refresh the time+progressbar every 100ms)
         if(!($NotCancellable))
         {
@@ -57,9 +57,9 @@ function Start-Timer {
             }
             if($key)
             {
-                $Host.UI.RawUI.FlushInputBuffer() # On enlève l'appui sur la touche, quelle qu'elle soit
+                $Host.UI.RawUI.FlushInputBuffer() # Remove the keystroke, whatever it was
                 $PSCmdlet.WriteError(
-                    (New-Object System.Management.Automation.ErrorRecord 'Ok, annulation.',
+                    (New-Object System.Management.Automation.ErrorRecord 'Ok, cancelled.',
                         $null, 'NotSpecified', $null))
                 Stop-Job $TimerJob
                 Remove-Job $TimerJob
