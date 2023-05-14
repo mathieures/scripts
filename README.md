@@ -11,6 +11,7 @@ gbash.bat					| Starts Git Bash if it is installed in the default location
 ipython.bat					| Starts IPython without having to specify `python -m IPython`
 list_hardlinks.bat			| List and optionally delete hardlinks of one or multiple files
 dump-wifi-passwords.bat		| Displays all registered wifi names and passwords
+Get-MD5.ps1					| Get the MD5 hash of the given string
 New-Link.ps1				| Create a link (symbolic by default) the easy way
 Set-LocationToFilePath.ps1	| Change the directory to the one of the file
 Start-Timer.ps1				| A timer (5s by default) cancellable by pressing any key. A sound is played at the end.
