@@ -62,26 +62,33 @@ goto end
 
 
 :remove_command
-rem Remove the first argument ('remove')
-shift
-if [%~1] == [] (
+rem If there is only one argument ('remove')
+if [%~2] == [] (
 	echo Argument needed.
 	goto end
 )
+:removing_loop
+rem Remove the first argument each iteration
+shift
+rem Break condition
+if [%~1] == [] (
+	goto removing_loop_end
+) else (
+	rem Search for the package in the file
+	>NUL findstr /i /x %~1 %packages_file%
+	if ERRORLEVEL 1 (
+		echo Package '%~1' not found.
+	) else (
+		echo Removing '%~1'
+		rem Output all non matching lines in the temp file
+		>%temp_file% findstr /v /i /x %~1 %packages_file%
+		rem Overwrite the packages file with the temp file
+		>NUL move /y %temp_file% %packages_file%
+	)
 
-rem Search for the package in the file
->NUL findstr /i "\<%~1\>" %packages_file%
-
-if ERRORLEVEL 1 (
-	echo Package '%~1' not found.
-	goto end
+	goto removing_loop
 )
-
-echo Removing '%~1'
-rem Output all non matching lines in the temp file
->%temp_file% findstr /v /i "\<%~1\>" %packages_file%
-rem Overwrite the packages file with the temp file
->NUL move /y %temp_file% %packages_file%
+:removing_loop_end
 goto end
 
 
