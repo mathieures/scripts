@@ -13,6 +13,7 @@ if not exist %packages_file% (
 )
 
 if [%~1] == [add] goto add_command
+if [%~1] == [remove] goto remove_command
 if [%~1] == [list] goto list_command
 if [%~1] == [edit] goto edit_command
 if [%~1] == [help] goto help_command
@@ -22,7 +23,7 @@ rem No argument
 :upgrade
 echo Updating sources...
 rem List upgradable packages in a file
-set temp_file=%tmp%\winget_upgradable_packages.txt
+set temp_file=%tmp%\auto_winget_upgrade_temp_file.txt
 >%temp_file% winget upgrade
 
 rem Run the winget upgrade command for packages in the file
@@ -60,6 +61,30 @@ if [%~1] == [] (
 goto end
 
 
+:remove_command
+rem Remove the first argument ('remove')
+shift
+if [%~1] == [] (
+	echo Argument needed.
+	goto end
+)
+
+rem Search for the package in the file
+>NUL findstr /i "\<%~1\>" %packages_file%
+
+if ERRORLEVEL 1 (
+	echo Package '%~1' not found.
+	goto end
+)
+
+echo Removing '%~1'
+rem Output all non matching lines in the temp file
+>%temp_file% findstr /v /i "\<%~1\>" %packages_file%
+rem Overwrite the packages file with the temp file
+>NUL move /y %temp_file% %packages_file%
+goto end
+
+
 :list_command
 rem List packages in the file
 for /f %%A in (%packages_file%) do (
@@ -81,6 +106,7 @@ echo     Tip: put a shortcut in %APPDATA%\Microsoft\Windows\Start Menu\Programs\
 echo;
 echo     Commands:
 echo       add package_id [package_id ...]	Add given packages to the list
+echo       remove package_id 				Remove given packages from the list
 echo       list                           	List the packages in the packages list
 echo       edit                           	Open the packages list in notepad.exe
 echo       help^|?                        	Display this help
