@@ -2,7 +2,8 @@
 # Thanks to Augie Gardner https://serverfault.com/a/583659/1003865
 param(
     [Parameter(mandatory=$true)]
-    [String] $Destination
+    [String] $Destination,
+    [int] $Port = 22
 )
 
-Get-Content ~/.ssh/id_rsa.pub | ssh $Destination "mkdir ~/.ssh 2>/dev/null ; cat >> ~/.ssh/authorized_keys"
+Get-Content ~/.ssh/id_rsa.pub | ssh -p $Port $Destination "mkdir ~/.ssh 2>/dev/null ; cat >> ~/.ssh/authorized_keys"
