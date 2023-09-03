@@ -9,7 +9,7 @@ if not exist %packages_file% (
 	fsutil file createnew %packages_file% 0
 	echo To add packages, use:
 	echo %~nx0 add ^<package_id_1^> [package_id_2 ...]
-	goto end
+	exit /b
 )
 
 if [%~1] == [add] goto add_command
@@ -37,14 +37,16 @@ for /f %%A in (%packages_file%) do (
 		echo x No upgrade for %%A
 	)
 )
-goto end
+exit /b
 
+
+rem Commands
 
 :add_command
 rem If there is only one argument ('add')
 if [%~2] == [] (
-	echo Argument needed.
-	goto end
+	call :error_no_argument
+	exit /b 1
 )
 :adding_loop
 rem Remove the first argument each iteration
@@ -58,14 +60,14 @@ if [%~1] == [] (
 	goto adding_loop
 )
 :adding_loop_end
-goto end
+exit /b
 
 
 :remove_command
 rem If there is only one argument ('remove')
 if [%~2] == [] (
-	echo Argument needed.
-	goto end
+	call :error_no_argument
+	exit /b 1
 )
 :removing_loop
 rem Remove the first argument each iteration
@@ -89,7 +91,7 @@ if [%~1] == [] (
 	goto removing_loop
 )
 :removing_loop_end
-goto end
+exit /b
 
 
 :list_command
@@ -97,13 +99,13 @@ rem List packages in the file
 for /f %%A in (%packages_file%) do (
 	echo %%A
 )
-goto end
+exit /b
 
 
 :edit_command
 rem Open the file to edit it
 notepad %packages_file%
-goto end
+exit /b
 
 
 :help_command
@@ -119,7 +121,11 @@ echo       edit                           		Open the packages list in notepad.ex
 echo       help^|?                        		Display this help
 echo;
 pause
-goto end
+exit /b
 
 
-:end
+rem Error messages
+
+:error_no_argument
+echo Argument needed.
+exit /b
