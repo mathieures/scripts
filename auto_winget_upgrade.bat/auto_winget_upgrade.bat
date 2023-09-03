@@ -112,11 +112,11 @@ echo     Automatically upgrade packages from a list of packages ID's with winget
 echo     Tip: put a shortcut in %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
 echo;
 echo     Commands:
-echo       add package_id [package_id ...]	Add given packages to the list
-echo       remove package_id 				Remove given packages from the list
-echo       list                           	List the packages in the packages list
-echo       edit                           	Open the packages list in notepad.exe
-echo       help^|?                        	Display this help
+echo       add package_id [package_id ...]		Add given packages to the list
+echo       remove package_id [package_id ...]	Remove given packages from the list
+echo       list                           		List the packages in the packages list
+echo       edit                           		Open the packages list in notepad.exe
+echo       help^|?                        		Display this help
 echo;
 pause
 goto end
