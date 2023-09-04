@@ -1,5 +1,13 @@
 @echo off
 
+rem Change the window title safely
+rem If the flag is not defined, start the script in a child
+if not defined awu_child_process (
+	set awu_child_process=1
+	cmd /c %0 %*
+	exit /b
+)
+
 title Auto Winget Upgrade
 
 set packages_file=%LOCALAPPDATA%\auto_winget_upgrade_packages.txt
