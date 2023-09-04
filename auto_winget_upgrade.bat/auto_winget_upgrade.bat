@@ -3,6 +3,8 @@
 title Auto Winget Upgrade
 
 set packages_file=%LOCALAPPDATA%\auto_winget_upgrade_packages.txt
+set temp_file=%tmp%\auto_winget_upgrade_temp_file.txt
+
 rem Create empty file if it doesn't exist
 if not exist %packages_file% (
 	rem Note: fsutil displays a message for file creation
@@ -23,7 +25,6 @@ rem No argument
 :upgrade
 echo Updating sources...
 rem List upgradable packages in a file
-set temp_file=%tmp%\auto_winget_upgrade_temp_file.txt
 >%temp_file% winget upgrade
 
 rem Run the winget upgrade command for packages in the file
