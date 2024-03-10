@@ -1,9 +1,20 @@
 # Equivalent (with less features) of the ssh-copy-id from Linux-based systems
 # Thanks to Augie Gardner https://serverfault.com/a/583659/1003865
 param(
-    [Parameter(mandatory=$true)]
+    [Parameter(Mandatory)]
     [String] $Destination,
-    [int] $Port = 22
+    [string] $KeyFilePath = "$env:USERPROFILE\.ssh\id_rsa.pub",
+    [int] $Port = 22,
+    [Alias('Y')]
+    [switch] $AssumeYes
 )
 
-Get-Content ~/.ssh/id_rsa.pub | ssh -p $Port $Destination "mkdir ~/.ssh 2>/dev/null ; cat >> ~/.ssh/authorized_keys"
+if (!$KeyFilePath.EndsWith('.pub') -and !$AssumeYes) {
+    $Answer = Read-Host -Prompt "'$KeyFilePath' does not end with '.pub'. Continue nonetheless? (y/N)"
+    if ($Answer -ine 'y') {
+        Write-Output 'Ok, cancelled.'
+        return
+    }
+}
+
+Get-Content -Path $KeyFilePath | ssh $Destination "mkdir -p ~/.ssh ; cat >> ~/.ssh/authorized_keys"
