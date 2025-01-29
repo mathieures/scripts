@@ -17,4 +17,4 @@ if (!$KeyFilePath.EndsWith('.pub') -and !$AssumeYes) {
     }
 }
 
-Get-Content -Path $KeyFilePath | ssh $Destination "mkdir -p ~/.ssh ; cat >> ~/.ssh/authorized_keys"
+Get-Content -Path $KeyFilePath | ssh -p $Port $Destination "mkdir -p ~/.ssh ; cat >> ~/.ssh/authorized_keys"
